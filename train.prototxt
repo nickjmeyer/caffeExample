@@ -1,0 +1,59 @@
+layer {
+  name: "data"
+  type: "HDF5Data"
+  top: "X"
+  top: "Y"
+  hdf5_data_param {
+    source: "./data_list.txt"
+    batch_size: 100
+  }
+}
+
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "X"
+  top: "ip1"
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+      name: "sigmoid"
+      type: "Sigmoid"
+      bottom: "ip1"
+      top: "sigmoid"
+}
+
+layer {
+      name: "ip2"
+      type: "InnerProduct"
+      bottom: "sigmoid"
+      top: "ip2"
+      inner_product_param {
+        num_output: 1
+	weight_filler {
+	  type: "xavier"
+	}
+	bias_filler {
+	  type: "constant"
+	  value: 0
+	}
+      }
+}
+
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "ip2"
+  bottom: "Y"
+  top: "loss"
+}
