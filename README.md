@@ -7,7 +7,7 @@ calculations of Caffe are understood, extract the estimated weights
 and calculated the estimate by hand.
 
 The three scripts are [`generateData.py`](./generateData),
-[`train.sh`](./trainsh), and [`evaluateModel.py`](./evaluateModel.py).
+[`train.sh`](./train.sh), and [`evaluateModel.py`](./evaluateModel.py).
 
 
 1. Generate data from a simple 3 layer neural network
