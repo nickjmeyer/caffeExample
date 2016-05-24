@@ -13,17 +13,21 @@ net = caffe.Net("./deploy.prototxt",
                 "./sed_iter_10000.caffemodel",
                 caffe.TEST)
 
+## pull out data
+with h5py.File("train.h5","r") as f:
+    X = np.asarray(f["X"])
+    Y = np.asarray(f["Y"]).flatten()
+
+
+## calculate Yhat from caffe
+YhatCaffe = net.forward(end="ip2")["ip2"].flatten()
+
+
 ## access estimated parameters
 w1hat = net.params["ip1"][0].data
 b1hat = net.params["ip1"][1].data
 w2hat = net.params["ip2"][0].data
 b2hat = net.params["ip2"][1].data
-
-
-## pull out data
-with h5py.File("train.h5","r") as f:
-    X = np.asarray(f["X"])
-    Y = np.asarray(f["Y"]).flatten()
 
 
 ## define sigmoid
@@ -36,10 +40,6 @@ n = Y.shape[0]
 YhatByHand = np.zeros((n,))
 for i in range(n):
     YhatByHand[i] = w2hat.dot(sigmoid(w1hat.dot(X[i,:].flatten())+b1hat))+b2hat
-
-
-## calculate Yhat from caffe
-YhatCaffe = net.forward(end="ip2")["ip2"].flatten()
 
 
 ## these two are the same
