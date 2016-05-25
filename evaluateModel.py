@@ -42,10 +42,12 @@ for i in range(n):
     YhatByHand[i] = w2hat.dot(sigmoid(w1hat.dot(X[i,:].flatten())+b1hat))+b2hat
 
 
-## these two are the same
+## euclidean loss for Yhat calculated by hand and yHat calculatd
+## forward in caffe
 print sum((Y-YhatByHand)**2)/(2.0*float(n))
 print sum((Y-YhatCaffe)**2)/(2.0*float(n))
 
 
-## this is zero
-print sum((YhatByHand -YhatCaffe)**2)/(2.0*float(n))
+## to make sure by hand calculation matches caffe
+## squared l2 distance between two solutions
+print sum((YhatByHand -YhatCaffe)**2)
